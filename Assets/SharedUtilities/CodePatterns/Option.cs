@@ -1,10 +1,16 @@
-namespace Psyfer.Utilities
+namespace Psyfer.Patterns
 {
     /// Rustlike Type: Option<T>
     /// Used in situations where you want to return a value or not.
     public struct Option<T>
     {
+        // Error state (panic)
+        private static readonly System.Exception panic = new("Option is none");
+
+        // Internal value
         private readonly T value;
+
+        // If we have Some or none
         public bool Some { get { return value != null; } }
         public bool None { get { return value == null; } }
 
@@ -15,7 +21,7 @@ namespace Psyfer.Utilities
         {
             if (value == null)
             {
-                throw new System.Exception("Option is none");
+                throw panic;
             }
             return value;
         }
@@ -32,14 +38,8 @@ namespace Psyfer.Utilities
 
         public static implicit operator T(Option<T> option)
         {
-            if (option.Some)
-            {
-                return option.value;
-            }
-            else
-            {
-                throw new System.Exception("Option is none");
-            }
+            if (option.Some) return option.value;
+            else throw panic;
         }
 
         public static implicit operator bool(Option<T> option)

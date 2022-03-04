@@ -114,7 +114,8 @@ namespace Psyfer.Utilities
         }
 
         /// <summary>
-        /// Remaps the type of the list to a new type
+        /// Transforms the list into a new list by applying a function to each item.
+        /// This can include type changes.
         /// </summary>
         public static List<T1> Map<T, T1>(this List<T> list, Func<T, T1> func)
         {
