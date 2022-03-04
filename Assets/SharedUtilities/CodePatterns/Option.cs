@@ -26,22 +26,26 @@ namespace Psyfer.Patterns
             return value;
         }
 
+        // Constructor
         public Option(T value)
         {
             this.value = value;
         }
 
+        // Implicit conversion from T to Option<T>
         public static implicit operator Option<T>(T value)
         {
             return new Option<T>(value);
         }
 
+        // Implicit conversion from Option<T> to T
         public static implicit operator T(Option<T> option)
         {
             if (option.Some) return option.value;
             else throw panic;
         }
 
+        // Implicit conversion from Option<T> to bool
         public static implicit operator bool(Option<T> option)
         {
             return option.Some;

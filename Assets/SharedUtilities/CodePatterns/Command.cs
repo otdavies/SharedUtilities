@@ -13,9 +13,11 @@ namespace Psyfer.Patterns
         protected readonly Action<T> undo;
         protected T state;
 
-        public Command(T state)
+        public Command(T state, Action<T> execute, Action<T> undo)
         {
             this.state = state;
+            this.execute = execute;
+            this.undo = undo;
         }
 
         public virtual void Execute()
