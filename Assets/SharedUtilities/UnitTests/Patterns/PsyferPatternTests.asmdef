@@ -1,10 +1,10 @@
 {
-    "name": "PsyferExtensionTests",
+    "name": "PsyferPatternTests",
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "PsyferExtensions"
+        "PsyferCodePatterns"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
