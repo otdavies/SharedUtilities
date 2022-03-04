@@ -5,27 +5,41 @@ namespace Psyfer.Patterns
 {
     public interface IMediate<P, T>
     {
-        void Register(P participant, Action<P, T> receive);
-        void Send(P from, P to, T message);
+        void Register(P participantKey, IMediatable<T> participant);
+        void Unregister(P participantKey);
+        void Send(P to, IMediatable<T> from, T message);
     }
 
-    public abstract class Mediator<P, T> : IMediate<P, T>
+    public interface IMediatable<T>
     {
-        protected readonly Dictionary<P, Action<P, T>> participants = new();
+        void Receive(IMediatable<T> from, T message);
+    }
 
-        public virtual void Register(P participant, Action<P, T> receive)
+    public class Mediator<P, T> : IMediate<P, T>
+    {
+        protected readonly Dictionary<P, IMediatable<T>> participants = new();
+
+        public virtual void Register(P participantKey, IMediatable<T> participant)
         {
-            if (!participants.ContainsKey(participant))
+            if (!participants.ContainsKey(participantKey))
             {
-                participants.Add(participant, receive);
+                participants.Add(participantKey, participant);
             }
         }
 
-        public virtual void Send(P from, P to, T message)
+        public virtual void Unregister(P participantKey)
         {
-            if (participants.ContainsKey(from) && participants.ContainsKey(to))
+            if (participants.ContainsKey(participantKey))
             {
-                participants[to].Invoke(from, message);
+                participants.Remove(participantKey);
+            }
+        }
+
+        public virtual void Send(P to, IMediatable<T> from, T message)
+        {
+            if (participants.ContainsKey(to))
+            {
+                participants[to].Receive(from, message);
             }
         }
     }
