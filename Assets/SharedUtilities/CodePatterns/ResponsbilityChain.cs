@@ -5,8 +5,8 @@ namespace Psyfer.Patterns
 {
     public interface Responsbility<T>
     {
-        void CanHandle(T value);
-        void Handle(T value);
+        bool CanHandle(T value);
+        T Handle(T value);
     }
 
     public abstract class Handler<T>
@@ -19,21 +19,23 @@ namespace Psyfer.Patterns
             this.responsibility = responsability;
         }
 
-        public virtual SetSuccessor(Handler<T> successor)
+        public void SetSuccessor(Handler<T> successor)
         {
-            this.next = successor;
+            this.successor = successor;
         }
 
-        public virtual void HandleRequest(Responsbility<T> request)
+        public virtual T HandleRequest(T request)
         {
             if (responsibility.CanHandle(request))
             {
-                responsibility.Handle(request);
+                return responsibility.Handle(request);
             }
             else if (successor != null)
             {
-                successor.HandleRequest(request);
+                return successor.HandleRequest(request);
             }
+
+            throw new Exception("No handler found");
         }
     }
 }
