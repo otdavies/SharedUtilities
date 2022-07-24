@@ -52,5 +52,6 @@ public class Quadtree
         this._maxLevels = maxLevels;
         this._pointsPerBucket = maxObjects;
         this._regions = new Option<Region>[4.Pow(maxLevels)];
+        this._regions[0] = new Option<Region>(region);
     }
 }
