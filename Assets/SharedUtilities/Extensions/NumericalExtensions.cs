@@ -51,6 +51,27 @@ namespace Psyfer.Utilities
             return t * t * t * (t * (6.0f * t - 15.0f) + 10.0f);
         }
 
+        /// <summary>
+        /// Calculate the pow value for an int without using floats / doubles  
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="pow"></param>
+        /// <returns></returns>
+        public static int Pow(this int value, int pow)
+        {
+            if (pow <= 0) return 1;
+
+            int ret = 1;
+            while (pow != 0)
+            {
+                if ((pow & 1) == 1)
+                    ret *= value;
+                value *= value;
+                pow >>= 1;
+            }
+            return ret;
+        }
+
         // Begin from the values initial value and lerp towards the end value.
         public static float SinLerp(this float start, float end, float time) => start + (end - start) * SinLerpTime(time);
         public static float CosLerp(this float start, float end, float time) => start + (end - start) * CosLerpTime(time);
