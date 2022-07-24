@@ -9,17 +9,17 @@ namespace Psyfer.Patterns
 
         // Internal value
         private readonly T value;
+        private readonly bool isSome;
 
         // If we have Some or none
-        public bool Some { get { return value != null; } }
-        public bool None { get { return value == null; } }
+        public bool Some { get { return isSome; } }
 
         /// <summary>
         /// Used when we want to unwrap a value once we know it's Some.
         /// </summary>
         public T Unwrap()
         {
-            if (value == null)
+            if (!isSome)
             {
                 throw panic;
             }
@@ -29,7 +29,15 @@ namespace Psyfer.Patterns
         // Constructor
         public Option(T value)
         {
+            if (value == null)
+            {
+                this.value = default;
+                this.isSome = false;
+                return;
+            }
+
             this.value = value;
+            this.isSome = true;
         }
 
         // Implicit conversion from T to Option<T>
